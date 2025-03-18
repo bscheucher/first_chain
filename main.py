@@ -1,8 +1,14 @@
-from langchain_openai import OpenAI
-from langchain.prompts import PromptTemplate
 import os
+
 from dotenv import load_dotenv
-from langchain_core.runnables import RunnablePassthrough
+from langchain.prompts import PromptTemplate
+from langchain_openai import OpenAI
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--task", default="Return a list of numbers")
+parser.add_argument("--language", default="python")
+args = parser.parse_args()
 
 # Secure API key properly in environment variables instead of hardcoding
 load_dotenv()
@@ -23,8 +29,8 @@ code_chain = code_prompt | llm
 
 # Use .invoke() instead of calling it directly
 result = code_chain.invoke({
-    "language": "python",
-    "task": "include a loop and return numbers from 1 to 10"
+    "language": args.language,
+    "task": args.task
 })
 
 print(result)
